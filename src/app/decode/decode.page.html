@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>decode</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div class="ion-padding">
+    <h3 *ngIf="images.length == 0" text-center> Silahkan Pilih Gambar</h3>
+      <ion-img [src]="img.path"></ion-img>
+    <ion-label>
+      {{ img.name }}
+    </ion-label>
+    <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
+      <ion-icon slot="icon-only" name="trash"></ion-icon>
+    </ion-button>
+  
+     
+        <ion-button fill="clear" expand="full" color="light" (click)="selectImage()"></ion-button>
+        <ion-icon name="camera" slot="start"></ion-icon>
+        Pilih Gambar
+        <ion-button href="decode">
+           Decode
+          </ion-button>
+      <ion-button href="home">
+        Back To Home
+      </ion-button>
+    
+</div>
+<div class="invisible"> 
+    <ion-img width="80" height="80" id="result" src=""></ion-img>
+
+  </div>
+  <canvas id="handler" class="invisible"></canvas>

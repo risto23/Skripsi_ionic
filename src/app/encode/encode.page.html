@@ -1,0 +1,52 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>encode</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+  <div class="ion-padding">
+    <div>
+      <h3 text-center> Silahkan Pilih Gambar Untuk Di Sembunyikan</h3>
+        <ion-img width="80" height="80" [src]="img.path"></ion-img>
+      <ion-label>
+        {{ img.name }}
+      </ion-label>
+      <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
+        <ion-icon slot="icon-only" name="trash"></ion-icon>
+      </ion-button>
+          <ion-button fill="clear" color="light" (click)="selectImage()"></ion-button>
+          <ion-icon name="camera" slot="start"></ion-icon>
+          Pilih Gambar
+        </div>
+        <div>
+        <h3 text-center> Silahkan Pilih Gambar Cover</h3>
+        <ion-img width="80" height="80" [src]="img.path"></ion-img>
+            <ion-label>
+              {{ img.name }}
+            </ion-label>
+            <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
+              <ion-icon slot="icon-only" name="trash"></ion-icon>
+            </ion-button>
+                <ion-button fill="clear" color="light" (click)="selectImage()"></ion-button>
+                <ion-icon name="camera" slot="start"></ion-icon>
+                Pilih Gambar
+              </div>
+              <ion-button href="home">
+                  Back To Home
+                </ion-button>
+              <ion-button (click)="encode()">
+                Encode
+              </ion-button>
+
+          
+             
+       
+      
+  </div>
+  <div class="invisible"> 
+    <ion-img width="80" height="80" id="result" src=""></ion-img>
+
+  </div>
+  <canvas id="handler" class="invisible"></canvas>
+

@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>hasil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<div class="ion-padding">
+    <h3 *ngIf="images.length == 0" text-center> Silahkan Pilih Gambar</h3>
+      <ion-img [src]="img.path"></ion-img>
+    <ion-label>
+      {{ img.name }}
+    </ion-label>
+    <ion-button  fill="clear" (click)="deleteImage(img, pos)">
+      <ion-icon slot="icon-only" name="md-download"></ion-icon>
+    </ion-button>
+      <ion-button href="home">
+        Back To Home
+      </ion-button>
+    
+</div>
