@@ -5,6 +5,7 @@ import { File, FileEntry } from '@ionic-native/file/ngx';
 import { IonicStorageModule } from '@ionic/storage'
 import { Storage } from '@ionic/storage';
 import { FilePath } from '@ionic-native/file-path/ngx';
+import * as $ from "jquery";
 
 const STORAGE_KEY = 'my_images';
 
@@ -232,8 +233,9 @@ deleteImage(imgEntry, position) {
 
 
 decrypt(){
+  container: 0;
   var decrdata = 0;
-	var dc = this.Crypter.container;
+	var dc = this.Handler.context.getImageData(0, 0, this.Handler.el.width, this.Handler.el.height);;
 	var bits = dc.data[dc.data.length-2] & 7;
 	console.log('bits of color information:', bits);
 	var offset = 8 - bits;
@@ -274,8 +276,8 @@ decrypt(){
 	
 	
 	$('#result').ready(function(){
-		$('.res').fadeIn();
-		$('.result-wrapper, #given').fadeOut();
+		$('.result').fadeIn();
+		$('.gambar').fadeOut();
 	});
 	
 	$('#result').attr({'src': result});

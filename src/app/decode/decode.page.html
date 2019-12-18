@@ -5,6 +5,7 @@
 </ion-header>
 
 <div class="ion-padding">
+  <div class="gambar">
     <h3 *ngIf="images.length == 0" text-center> Silahkan Pilih Gambar</h3>
       <ion-img [src]="img.path"></ion-img>
     <ion-label>
@@ -24,10 +25,12 @@
       <ion-button href="home">
         Back To Home
       </ion-button>
-    
+    </div>
 </div>
-<div class="invisible"> 
-    <ion-img width="80" height="80" id="result" src=""></ion-img>
 
-  </div>
+<div class=" res invisible"> 
+    <span class="caption">Here You Go</span>
+    <ion-img width="80" height="80" id="result" src=""></ion-img>
+    <ion-button>Simpan Gambar</ion-button>
+</div>
   <canvas id="handler" class="invisible"></canvas>

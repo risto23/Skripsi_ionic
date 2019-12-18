@@ -6,7 +6,7 @@
 
 
   <div class="ion-padding">
-    <div>
+    <div class="gambar">
       <h3 text-center> Silahkan Pilih Gambar Untuk Di Sembunyikan</h3>
         <ion-img width="80" height="80" [src]="img.path"></ion-img>
       <ion-label>
@@ -31,20 +31,17 @@
                 <ion-button fill="clear" color="light" (click)="selectImage()"></ion-button>
                 <ion-icon name="camera" slot="start"></ion-icon>
                 Pilih Gambar
-              </div>
+          </div>
               <ion-button href="home">
                   Back To Home
                 </ion-button>
               <ion-button (click)="encode()">
                 Encode
-              </ion-button>
-
-          
-             
-       
-      
+              </ion-button>  
   </div>
-  <div class="invisible"> 
+
+
+  <div class="res invisible"> 
     <ion-img width="80" height="80" id="result" src=""></ion-img>
 
   </div>
