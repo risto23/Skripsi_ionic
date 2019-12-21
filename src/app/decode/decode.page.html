@@ -6,17 +6,13 @@
 
 <div class="ion-padding">
   <div class="gambar">
-    <h3 *ngIf="images.length == 0" text-center> Silahkan Pilih Gambar</h3>
-      <ion-img [src]="img.path"></ion-img>
-    <ion-label>
-      {{ img.name }}
-    </ion-label>
-    <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
-      <ion-icon slot="icon-only" name="trash"></ion-icon>
-    </ion-button>
-  
-     
-        <ion-button fill="clear" expand="full" color="light" (click)="selectImage()"></ion-button>
+    <ion-text>
+    <h3 *ngIf="images.length == 0" text-center> Silahkan Pilih Gambar Yang Akan di Decode</h3>
+  </ion-text>
+  <ion-thumbnail>
+    <ion-img width="80" height="80" id="hidden" src="{{hidden}}"></ion-img>
+  </ion-thumbnail>
+        <ion-button fill="clear" expand="full" color="light" (click)="PilihGambarSembunyi()"></ion-button>
         <ion-icon name="camera" slot="start"></ion-icon>
         Pilih Gambar
         <ion-button href="decode">
@@ -30,7 +26,7 @@
 
 <div class=" res invisible"> 
     <span class="caption">Here You Go</span>
-    <ion-img width="80" height="80" id="result" src=""></ion-img>
+    <ion-img width="30" height="30" id="result" src=""></ion-img>
     <ion-button>Simpan Gambar</ion-button>
 </div>
-  <canvas id="handler" class="invisible"></canvas>
+ 

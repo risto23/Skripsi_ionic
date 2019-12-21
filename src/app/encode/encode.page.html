@@ -5,30 +5,27 @@
 </ion-header>
 
 
-  <div class="ion-padding">
+  <div class="ion-padding" >
     <div class="gambar">
+      <ion-text>
       <h3 text-center> Silahkan Pilih Gambar Untuk Di Sembunyikan</h3>
-        <ion-img width="80" height="80" [src]="img.path"></ion-img>
-      <ion-label>
-        {{ img.name }}
-      </ion-label>
-      <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
-        <ion-icon slot="icon-only" name="trash"></ion-icon>
-      </ion-button>
-          <ion-button fill="clear" color="light" (click)="selectImage()"></ion-button>
+    </ion-text>
+    <ion-thumbnail>
+        <ion-img id="hidden" src="{{hidden}}"></ion-img>
+      </ion-thumbnail>
+          <ion-button fill="clear" color="light" (click)="PilihGambarSembunyi()"></ion-button>
           <ion-icon name="camera" slot="start"></ion-icon>
           Pilih Gambar
         </div>
         <div>
+
+         <ion-text>
         <h3 text-center> Silahkan Pilih Gambar Cover</h3>
-        <ion-img width="80" height="80" [src]="img.path"></ion-img>
-            <ion-label>
-              {{ img.name }}
-            </ion-label>
-            <ion-button slot="end" fill="clear" (click)="deleteImage(img, pos)">
-              <ion-icon slot="icon-only" name="trash"></ion-icon>
-            </ion-button>
-                <ion-button fill="clear" color="light" (click)="selectImage()"></ion-button>
+      </ion-text> 
+      <ion-thumbnail>
+        <ion-img id="cover" src="{{cover}}"></ion-img>
+      </ion-thumbnail>
+                <ion-button fill="clear" color="light" (click)="PilihGambarCover()"></ion-button>
                 <ion-icon name="camera" slot="start"></ion-icon>
                 Pilih Gambar
           </div>
@@ -42,8 +39,8 @@
 
 
   <div class="res invisible"> 
-    <ion-img width="80" height="80" id="result" src=""></ion-img>
+    <ion-img width="30" height="30" id="result" src=""></ion-img>
 
   </div>
-  <canvas id="handler" class="invisible"></canvas>
+  
 

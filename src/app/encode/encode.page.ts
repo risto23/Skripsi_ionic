@@ -18,8 +18,17 @@ const STORAGE_KEY = 'my_images';
 export class EncodePage implements OnInit {
 
   images = [];
+  immages2=[];
   platform: any;
   crypter = false;
+  cover :string;
+  hidden :string;
+
+  imagePickerOptions = {
+    maximumImagesCount: 1,
+    outputType: 1,
+    quality: 50
+  };
 
   constructor(private camera: Camera, private file: File,private actionSheetController: ActionSheetController, private toastController: ToastController,
     private storage: Storage, private plt: Platform, private loadingController: LoadingController,
@@ -27,19 +36,19 @@ export class EncodePage implements OnInit {
      
   }
 
-  async selectImage() {
+  async PilihGambarSembunyi() {
     const actionSheet = await this.actionSheetController.create({
         header: "Select Image source",
         buttons: [{
                 text: 'Load from Library',
                 handler: () => {
-                    this.takePicture(this.camera.PictureSourceType.PHOTOLIBRARY);
+                    this.GaleriGambarHidden();
                 }
             },
             {
                 text: 'Use Camera',
                 handler: () => {
-                    this.takePicture(this.camera.PictureSourceType.CAMERA);
+                    this.KameraGambarHidden();
                 }
             },
             {
@@ -50,75 +59,107 @@ export class EncodePage implements OnInit {
     });
     await actionSheet.present();
 }
- 
-takePicture(sourceType: PictureSourceType) {
-    var options: CameraOptions = {
-        quality: 100,
-        sourceType: sourceType,
-        saveToPhotoAlbum: false,
-        correctOrientation: true
-    };
- 
-    this.camera.getPicture(options).then(imagePath => {
-        if (this.platform.is('android') && sourceType === this.camera.PictureSourceType.PHOTOLIBRARY) {
-            this.filePath.resolveNativePath(imagePath)
-                .then(filePath => {
-                    let correctPath = filePath.substr(0, filePath.lastIndexOf('/') + 1);
-                    let currentName = imagePath.substring(imagePath.lastIndexOf('/') + 1, imagePath.lastIndexOf('?'));
-                    this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-                });
-        } else {
-            var currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-            var correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-            this.copyFileToLocalDir(correctPath, currentName, this.createFileName());
-        }
-    });
+
+async PilihGambarCover() {
+  const actionSheet = await this.actionSheetController.create({
+      header: "Select Image source",
+      buttons: [{
+              text: 'Load from Library',
+              handler: () => {
+                  this.GaleriGambarCover();
+              }
+          },
+          {
+              text: 'Use Camera',
+              handler: () => {
+                  this.KameraGambarCover();
+              }
+          },
+          {
+              text: 'Cancel',
+              role: 'cancel'
+          }
+      ]
+  });
+  await actionSheet.present();
+}
+
+
+KameraGambarHidden() {
+  const options: CameraOptions = {
+    quality: 100,
+    destinationType: this.camera.DestinationType.DATA_URL,
+    encodingType: this.camera.EncodingType.JPEG,
+    mediaType: this.camera.MediaType.PICTURE
+  }
+  this.camera.getPicture(options).then((imageData) => {
+    // imageData is either a base64 encoded string or a file URI
+    // If it's base64 (DATA_URL):
+    this.hidden = 'data:image/jpeg;base64,' + imageData;
+  }, (err) => {
+    // Handle error
+    alert('Error in showing hidden image');
+  });
   }
 
-  ngOnInit() {
-    this.plt.ready().then(() => {
-      this.loadStoredImages();
+GaleriGambarHidden() {
+    const options: CameraOptions = {
+      quality: 100,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      sourceType:this.camera.PictureSourceType.PHOTOLIBRARY,
+      saveToPhotoAlbum:false
+    }
+    this.camera.getPicture(options).then((imageData) => {
+      // imageData is either a base64 encoded string or a file URI
+      // If it's base64 (DATA_URL):
+      this.hidden = 'data:image/jpeg;base64,' + imageData;
+    }, (err) => {
+      // Handle error
+      alert('Error in showing hidden image');
     });
+    }
+
+
+    KameraGambarCover() {
+      const options: CameraOptions = {
+        quality: 100,
+        destinationType: this.camera.DestinationType.DATA_URL,
+        encodingType: this.camera.EncodingType.JPEG,
+        mediaType: this.camera.MediaType.PICTURE
+      }
+      this.camera.getPicture(options).then((imageData) => {
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64 (DATA_URL):
+        this.cover = 'data:image/jpeg;base64,' + imageData;
+      }, (err) => {
+        // Handle error
+        alert('Error in showing hidden image');
+      });
+      }
+    
+    GaleriGambarCover() {
+        const options: CameraOptions = {
+          quality: 100,
+          destinationType: this.camera.DestinationType.DATA_URL,
+          sourceType:this.camera.PictureSourceType.PHOTOLIBRARY,
+          saveToPhotoAlbum:false
+        }
+        this.camera.getPicture(options).then((imageData) => {
+          // imageData is either a base64 encoded string or a file URI
+          // If it's base64 (DATA_URL):
+          this.cover = 'data:image/jpeg;base64,' + imageData;
+        }, (err) => {
+          // Handle error
+          alert('Error in showing hidden image');
+        });
+        }
+    
+   
+  
+  ngOnInit() {
+    
   }
   
-createFileName() {
-    var d = new Date(),
-        n = d.getTime(),
-        newFileName = n + ".jpg";
-    return newFileName;
-}
- 
-copyFileToLocalDir(namePath, currentName, newFileName) {
-    this.file.copyFile(namePath, currentName, this.file.dataDirectory, newFileName).then(success => {
-        this.updateStoredImages(newFileName);
-    }, error => {
-        this.presentToast('Error while storing file.');
-    });
-}
-updateStoredImages(name) {
-  this.storage.get(STORAGE_KEY).then(images => {
-      let arr = JSON.parse(images);
-      if (!arr) {
-          let newImages = [name];
-          this.storage.set(STORAGE_KEY, JSON.stringify(newImages));
-      } else {
-          arr.push(name);
-          this.storage.set(STORAGE_KEY, JSON.stringify(arr));
-      }
-
-      let filePath = this.file.dataDirectory + name;
-      let resPath = this.pathForImage(filePath);
-
-      let newEntry = {
-          name: name,
-          path: resPath,
-          filePath: filePath
-      };
-
-      this.images = [newEntry, ...this.images];
-      this.ref.detectChanges(); // trigger change detection cycle
-  });
-}
 
 deleteImage(imgEntry, position) {
   this.images.splice(position, 1);
@@ -135,25 +176,9 @@ deleteImage(imgEntry, position) {
       });
   });
 }
-  loadStoredImages() {
-    this.storage.get(STORAGE_KEY).then(images => {
-      if (images) {
-        let arr = JSON.parse(images);
-        this.images = [];
-        for (let img of arr) {
-          let filePath = this.file.dataDirectory + img;
-          let resPath = this.pathForImage(filePath);
-          this.images.push({ name: img, path: resPath, filePath: filePath });
-        }
-      }
-    });
-  }
  
-  pathForImage(img) {
-    if (img === null) {
-      return '';
-    } 
-  }
+ 
+
  
   async presentToast(text) {
     const toast = await this.toastController.create({
@@ -164,22 +189,40 @@ deleteImage(imgEntry, position) {
     toast.present();
   }
 
-  Handler = {
+  Hidden = {
     el: null,
     context: null,
     init: function(){
-      this.el = $('#handler')[0];
+      this.el = $('#hidden')[0];
+      this.context = this.el.getContext('2d');
+    },
+  };
+
+  Cover = {
+    el: null,
+    context: null,
+    init: function(){
+      this.el = $('#cover')[0];
+      this.context = this.el.getContext('2d');
+    },
+  };
+
+  Result = {
+    el: null,
+    context: null,
+    init: function(){
+      this.el = $('#result')[0];
       this.context = this.el.getContext('2d');
     },
   };
 
 encode(){
 
-  
+
 	
 	this.Crypter.changeLowerBitsToHigher();
 	
-	var result = this.Handler.el.toDataURL();
+	var result = this.Result.el.toDataURL();
 
 	//result = result.replace('image/png', 'image/octet-stream');
   $('#result').ready(function(){
@@ -204,9 +247,13 @@ Crypter = {
 	* @param bits: how many LOWER bits in container to replace
 	*/
 	changeLowerBitsToHigher: function(){
+  //mengambil gambar sebagai hidden dari imageview
+  this.source = this.Hidden.context.getImageData(0,0, this.Hidden.el.width, this.Hidden.el.height);
+  //mengambil gambar sebagai cover dari imageview
+  this.container = this.Cover.context.getImageData(0,0, this.cover.el.width, this.Cover.el.height);
 		var dsrc = this.source;
 		var dc = this.container;
-		var d = this.Handler.context.getImageData(0, 0, this.Handler.el.width, this.Handler.el.height);
+		var d = this.Cover.context.getImageData(0, 0, this.Cover.el.width, this.Cover.el.height);
 		var bits = 2;
 		
 		var offset = 8 - bits;
@@ -246,7 +293,7 @@ Crypter = {
 		console.log('last pixel:', i); //this will be the next red value in the pixel after source image
 		d.data[i+3] = 254;  //changing alpha of the last+1 pixel to mark the end of crypted message;
 		
-		this.Handler.context.putImageData(d,0,0);
+		this.Result.context.putImageData(d,0,0);
 	},
 };
 
