@@ -94,6 +94,11 @@ GaleriGambarHidden() {
     init: function(){
       this.el = $('#hidden')[0];
       this.context = this.el.getContext('2d');
+      var canvas = document.createElement('handler');
+      var img_hidden = document.getElementById('hidden');
+      canvas.width = img_hidden.width;
+      canvas.height = img_hidden.height;
+      this.context.drawImage(img_hidden, 0, 0 );
     },
   };
 
@@ -104,9 +109,14 @@ GaleriGambarHidden() {
     init: function(){
       this.el = $('#result')[0];
       this.context = this.el.getContext('2d');
+      var canvas = document.createElement('result');
+      var img = document.getElementById('result');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      this.context.drawImage(img, 0, 0 );
     },
-  };
 
+  };
  
 
 decrypt(){
