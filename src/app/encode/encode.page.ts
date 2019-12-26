@@ -195,6 +195,11 @@ deleteImage(imgEntry, position) {
     init: function(){
       this.el = $('#hidden')[0];
       this.context = this.el.getContext('2d');
+      var canvas = document.createElement('handler');
+      var img_hidden = document.getElementById('hidden');
+      canvas.width = img_hidden.width;
+      canvas.height = img_hidden.height;
+      this.context.drawImage(img_hidden, 0, 0 );
     },
   };
 
@@ -204,6 +209,11 @@ deleteImage(imgEntry, position) {
     init: function(){
       this.el = $('#cover')[0];
       this.context = this.el.getContext('2d');
+      var canvas = document.createElement('priview');
+      var img_cover = document.getElementById('cover');
+      canvas.width = img_cover.width;
+      canvas.height = img_cover.height;
+      this.context.drawImage(img_cover, 0, 0 );
     },
   };
 
@@ -213,7 +223,13 @@ deleteImage(imgEntry, position) {
     init: function(){
       this.el = $('#result')[0];
       this.context = this.el.getContext('2d');
+      var canvas = document.createElement('result');
+      var img = document.getElementById('result');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      this.context.drawImage(img, 0, 0 );
     },
+
   };
 
 encode(){
@@ -253,7 +269,7 @@ Crypter = {
   this.container = this.Cover.context.getImageData(0,0, this.cover.el.width, this.Cover.el.height);
 		var dsrc = this.source;
 		var dc = this.container;
-		var d = this.Cover.context.getImageData(0, 0, this.Cover.el.width, this.Cover.el.height);
+		var d = this.Cover.getImageData(0, 0, this.Cover.el.width, this.Cover.el.height);
 		var bits = 2;
 		
 		var offset = 8 - bits;
@@ -293,7 +309,7 @@ Crypter = {
 		console.log('last pixel:', i); //this will be the next red value in the pixel after source image
 		d.data[i+3] = 254;  //changing alpha of the last+1 pixel to mark the end of crypted message;
 		
-		this.Result.context.putImageData(d,0,0);
+		this.Result.putImageData(d,0,0);
 	},
 };
 
